@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title> UNPHU </title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/Content/assets/img/unphu.png" rel="icon" type="image/png">
+    <link href="~/Content/assets/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="76x76">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/Content/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/Content/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/Content/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="/Content/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="/Content/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/Content/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/Content/assets/css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="@Url.Action("Index", "DashBoard")" class="logo d-flex align-items-center">
+                <img src="~/Content/assets/img/unphu.png" alt="">
+                <span class="d-none d-lg-block">UNPHU</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item dropdown pe-3">
+
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img src="~/Content/assets/img/user.png" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2"> @((Session["UserName"] == null) ? "Desconocido" : Session["UserName"].ToString()) </span>
+                    </a><!-- End Profile Iamge Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>  @((Session["UserName"] == null) ? "Desconocido" : Session["UserName"].ToString()) </h6>
+                            <span> @((Session["GrupoUsuario"] == null) ? "General" : Session["GrupoUsuario"].ToString()) </span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        @if ((Session["PermisosId"] as int[]).Contains(1))
+                        {
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Profile", "Usuario")">
+                                    <i class="bi bi-person"></i>
+                                    <span>Perfil</span>
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Edit", "UsuarioContrasena")">
+                                <i class="bi bi-gear"></i>
+                                <span>Cambiar Contraseña</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="@Url.Action("Salir", "Login")">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Salir</span>
+                            </a>
+                        </li>
+
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+
+            </ul>
+        </nav><!-- End Icons Navigation -->
+
+    </header><!-- End Header -->
+    <!--? ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link " href="@Url.Action("Index", "DashBoard")">
+                    <i class="bi bi-house"></i>
+                    <span>Inicio</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+
+            @if ((Session["PermisosId"] as int[]).Contains(3) || (Session["PermisosId"] as int[]).Contains(4))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#license-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-clipboard"></i><span>Licencia</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="license-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        @if ((Session["PermisosId"] as int[]).Contains(3))
+                        {
+                            <li>
+                                <a href="@Url.Action("Create", "Licencia")">
+                                    <i class="bi bi-circle"></i><span>Nueva</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Licencia")">
+                                    <i class="bi bi-circle"></i><span>Listado</span>
+                                </a>
+                            </li>
+                        }
+                        @if ((Session["PermisosId"] as int[]).Contains(4))
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "LicenciaConfiguracion")">
+                                    <i class="bi bi-circle"></i><span>Configuracion</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li><!--? End Components Nav -->
+            }
+
+            @if ((Session["PermisosId"] as int[]).Contains(7))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#Motivo-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-people"></i><span>Motivos de Tardanza</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="Motivo-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="@Url.Action("Create", "MotivoTardanza")">
+                                <i class="bi bi-clock"></i><span> Nueva </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "MotivoTardanza") ">
+                                <i class="bi bi-circle"></i><span> Listado</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!--? End Components Nav -->
+            }
+
+            @if (Session["EsLider"].ToString() == "True")
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#Tardanza-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-people"></i><span>Recursos Asignados</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="Tardanza-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="@Url.Action("Index", "UsuarioAsociado", new { id = Session["UserID"].ToString() }) ">
+                                <i class="bi bi-circle"></i><span> Listado</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create", "UsuarioTardanza")">
+                                <i class="bi bi-clock"></i><span> Nueva Tardanza</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!--? End Components Nav -->
+            }
+
+            @if ((Session["PermisosId"] as int[]).Contains(6))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#Solicitudes-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-envelope-plus"></i><span>Solicitudes</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="Solicitudes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="@Url.Action("Create", "UsuarioSolicitudes")">
+                                <i class="bi bi-circle"></i><span> Nueva</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "UsuarioSolicitudes")">
+                                <i class="bi bi-circle"></i><span> Listado</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!--? End Components Nav -->
+            }
+
+            @if ((Session["PermisosId"] as int[]).Contains(5))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#Aprobar-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-hourglass-split"></i><span>Solicitudes Pendientes</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="Aprobar-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="@Url.Action("Home", "SolicitudEstado")">
+                                <i class="bi bi-circle"></i><span>Aprobar o Rechazar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!--? End Components Nav -->
+            }
+
+            @if ((Session["PermisosId"] as int[]).Contains(5))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#Historial-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-journal-text"></i><span>Historial</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="Historial-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                        <li>
+                            <a href="@Url.Action("Index", "SolicitudEstado")">
+                                <i class="bi bi-circle"></i><span>Listado</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!--? End Components Nav -->
+            }
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#OrgChart-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-people"></i><span>Empleados</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="OrgChart-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <li>
+                        <a href="@Url.Action("Details", "Usuario")">
+                            <i class="bi bi-circle"></i><span>Listado</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("OrgChart", "Usuario")">
+                            <i class="bi bi-circle"></i><span>Organigrama</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!--? End Components Nav -->
+
+
+            @if ((Session["PermisosId"] as int[]).Contains(2))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-person"></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                        <li>
+                            <a href="@Url.Action("Create", "Usuario")">
+                                <i class="bi bi-circle"></i><span>Nuevo</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Usuario")">
+                                <i class="bi bi-circle"></i><span>Listado</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" style="width: 80%; margin: auto;">
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "GrupoUsuario")">
+                                <i class="bi bi-circle"></i><span>Grupos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Permiso")">
+                                <i class="bi bi-circle"></i><span>Permisos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" style="width: 80%; margin: auto;">
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Departamento")">
+                                <i class="bi bi-circle"></i><span>Departamento</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Posicion")">
+                                <i class="bi bi-circle"></i><span>Posicion</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li><!--? End Components Nav -->
+            }
+        </ul>
+
+    </aside><!-- End Sidebar-->
+
+
+    <main id="main" class="main">
+        @Html.Partial("_Notifications")
+        @RenderBody()
+    </main>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="/Content/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="/Content/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/Content/assets/vendor/chart.js/chart.min.js"></script>
+    <script src="/Content/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="/Content/assets/vendor/quill/quill.min.js"></script>
+    <script src="/Content/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="/Content/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="/Content/assets/vendor/php-email-form/validate.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="/Content/assets/js/main.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('table.display').DataTable({
+                "pageLength": 15,
+                "language":
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                },
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                //to select and search from grid
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel'
+                ]
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var elements = document.getElementsByClassName("close")
+
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

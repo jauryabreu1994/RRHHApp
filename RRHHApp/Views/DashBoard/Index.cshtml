@@ -1,0 +1,209 @@
+﻿@model RRHHApp.Models.DashBoard.DashBoard
+
+@{
+    ViewBag.Title = "DashBoard";
+
+    List<RRHHApp.Models.Usuarios.Usuario> usuarios = ViewBag.Usuarios as List<RRHHApp.Models.Usuarios.Usuario>;
+    List<RRHHApp.Models.Solicitudes.UsuarioSolicitudes> usuariosolicitudes = ViewBag.UsuarioSolicitudes as List<RRHHApp.Models.Solicitudes.UsuarioSolicitudes>;
+    List<RRHHApp.Models.Licencias.Licencia> licencias = ViewBag.Licencias as List<RRHHApp.Models.Licencias.Licencia>;
+}
+
+
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+
+            <!--?  Left side columns -->
+            <div class="col-lg-8">
+                <div class="row">
+
+                    @if (Model.Cant_Total > 0)
+                    {
+                        <!-- ? Comienzo Solicitudes Pendiente Card -->
+                        <div class="col-xxl-4 col-md-6">
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Solicitudes Pendiente </h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-hourglass-bottom"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6>@Model.Cant_Pendientes</h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> <!--  ? Final Solicitudes Pendientes Card -->
+                        <!-- ? Comienzo Solicitud Aprobada Card -->
+                        <div class="col-xxl-4 col-md-6">
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Solicitudes Aprobadas</h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-person-check"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6> @Model.Cant_Aprobadas </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- ? Final Solicitudes Aprobadas Card -->
+                        <!-- ? Comienzo Total Solicitudes Card -->
+                        <div class="col-xxl-4 col-xl-12">
+
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Total de Solicitudes </h5>
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                            <i class="bi bi-journal-text"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6> @Model.Cant_Total </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- ? Final de Total Card -->
+                    }
+
+                    @if (licencias.Count() > 0)
+                    {
+                        foreach (var term in licencias)
+                        {
+                            <div class="col-xxl-4 col-md-6">
+                                <div class="card info-card revenue-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@term.Descripcion </h5>
+
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-@term.Icono"></i>
+                                            </div>
+                                            <div class="ps-3">
+                                                <h6>@term.Dias_Disponibles</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    }
+
+
+                    <!--? Listado -->
+                    <div class="col-12">
+                        <div class="card recent-sales">
+
+                            <div class="filter">
+                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                    <li class="dropdown-header text-start">
+                                        <h6>Filter</h6>
+                                    </li>
+
+                                    <li><a class="dropdown-item" href="#">Today</a></li>
+                                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title"> Nuevos Empleados </h5>
+
+                                <table class="table table-borderless datatable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"> ID-Empleado</th>
+                                            <th scope="col"> Nombre </th>
+                                            <th scope="col"> Posicion </th>
+                                            <th scope="col"> Departamento </th>
+                                            <th scope="col"> Fecha Ingreso </th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (usuarios.Count() > 0)
+                                        {
+                                            foreach (var term in usuarios)
+                                            {
+                                                <tr>
+                                                    <th scope="row"><a href="#">@Html.DisplayFor(modelItem => term.UsuarioId)</a></th>
+                                                    <td> @string.Format("{0} {1}", term.Nombre, term.Apellido)</td>
+                                                    <td> @Html.DisplayFor(modelItem => term._Posicion.Descripcion)</td>
+                                                    <td> @Html.DisplayFor(modelItem => term._Departamento.Descripcion)</td>
+                                                    <td style="text-align:right"> @term.FechaIngreso.ToString("dd-MMM-yyyy")</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div><!--? Final del listado -->
+                </div>
+            </div><!-- ? End Left side columns -->
+            <!-- ! Right side columns -->
+            <div class="col-lg-4">
+
+                <div class="col-12">
+                    <div class="card recent-sales">
+
+                        <div class="card-body">
+                            <h5 class="card-title"> Proximas Licencias </h5>
+
+                            <table class="table table-borderless datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"> Nombre </th>
+                                        <th scope="col"> Licencia </th>
+                                        <th scope="col" style="text-align:right"> Fecha </th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (usuariosolicitudes.Count() > 0)
+                                    {
+                                        foreach (var term in usuariosolicitudes)
+                                        {
+                                            <tr>
+                                                <td> @string.Format("{0} {1}", term._Usuario.Nombre, term._Usuario.Apellido)</td>
+                                                <td> @Html.DisplayFor(modelItem => term._Licencia.Descripcion)</td>
+                                                <td style="text-align:right"> @string.Format("{0} - {1}", term.FechaDesde.ToString("dd-MMM-yyyy"), term.FechaHasta.ToString("dd-MMM-yyyy"))</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div><!--? Final del listado -->
+
+            </div><!-- End Right side columns -->
+
+        </div>
+    </section>

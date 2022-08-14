@@ -1,0 +1,84 @@
+﻿@model IEnumerable<RRHHApp.Models.Tardanza.UsuarioTardanza>
+
+@{
+    ViewBag.Title = "Listado de Tardazas de Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>@ViewBag.Title</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "UsuarioTardanza")">Tardanza</a></li>
+            <li class="breadcrumb-item">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <br />
+                    <button type="button" class="btn btn-success btn-sm" title="Agregar Nueva Tardaza de Usuario"
+                            style="float: right; margin-top: -15px; margin-right: 5px; padding: 5px 15px 5px 10px;"
+                            onclick="location.href='@Url.Action("Create", "UsuarioTardanza")'">
+                        <span class="fa fa-plus">&nbsp;</span> Agregar Nueva Tardaza de Usuario
+                    </button>
+                    <br />
+                    <table class="table datatable table-responsive table-hover table-striped display" width="100%" cellspacing="1">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                   Usuario
+                                </th>
+                                <th>
+                                    Motivo de Tardanza
+                                </th>
+                                <th>
+                                    Tiempo
+                                </th>
+                                <th>
+                                    Comentario
+                                </th>
+                                <th>
+                                    Fecha
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0)
+                            {
+                                foreach (var term in Model)
+                                {
+                                    <tr style="@(term.Eliminado == true ? "background-color:#FAE6E9" : "")">
+                                        <td>@string.Format("{0} {1}", term._Usuario.Nombre, term._Usuario.Apellido)</td>
+                                        <td>@Html.DisplayFor(modelItem => term._MotivoTardanza.Descripcion)</td>
+                                        
+                                        <td>@term.Tiempo.ToString("HH:mm")</td>
+                                        <td>@Html.DisplayFor(modelItem => term.Comentario)</td>
+                                        <td>@term.FechaTardanza.ToString("dd/MM/yyyy")</td>
+                                        <td align="right">
+                                            @if (!term.Eliminado)
+                                            {
+                                                <button type="button" class="btn btn-danger btn-sm" title="Eliminar" onclick="location.href='@Url.Action("Delete", "UsuarioTardanza", new { id = term.Id }) '">
+                                                    <span class="bi bi-eraser">&nbsp;</span>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

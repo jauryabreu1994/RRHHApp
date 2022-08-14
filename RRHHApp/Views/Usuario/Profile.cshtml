@@ -1,0 +1,213 @@
+﻿@model RRHHApp.Models.Usuarios.Usuario
+
+@{
+    ViewBag.Title = "Perfil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Profile</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Usuario</li>
+            <li class="breadcrumb-item active">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section profile">
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                    <img src="~/Content/img/user.png" alt="Profile" class="rounded-circle">
+                    <h2>@string.Format("{0} {1}", Model.Nombre, Model.Apellido)</h2>
+                    <h3> @Model._Departamento.Descripcion</h3>
+                    <div class="social-links mt-2">
+                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Información</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Actualizar Perfil</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                            <h5 class="card-title">Profile Details</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Cod. Usuario</div>
+                                <div class="col-lg-9 col-md-8">@Model.UsuarioId</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label "> Nombre Completo </div>
+                                <div class="col-lg-9 col-md-8"> @string.Format("{0} {1}", Model.Nombre, Model.Apellido) </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Cedula o Pasaporte</div>
+                                <div class="col-lg-9 col-md-8">@Model.Identificacion</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Correo</div>
+                                <div class="col-lg-9 col-md-8">@Model.Correo</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label"> Departamento </div>
+                                <div class="col-lg-9 col-md-8"> @Model._Departamento.Descripcion</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label"> Puesto </div>
+                                <div class="col-lg-9 col-md-8"> @Model._Posicion.Descripcion</div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label"> Grupo </div>
+                                <div class="col-lg-9 col-md-8"> @Model._GrupoUsuario.Descripcion</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">País</div>
+                                <div class="col-lg-9 col-md-8">@Model._Pais.Descripcion</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Ciudad</div>
+                                <div class="col-lg-9 col-md-8">@Model._Ciudad.Descripcion</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Direccion</div>
+                                <div class="col-lg-9 col-md-8">@Model.Direccion</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Telefono</div>
+                                <div class="col-lg-9 col-md-8">@Model.Telefono</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Fecha Ingreso</div>
+                                <div class="col-lg-9 col-md-8">@Model.FechaIngreso.ToString("dd-MMM-yyyy")</div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.Id)
+                                @Html.HiddenFor(model => model.FechaCreacion)
+                                @Html.HiddenFor(model => model.FechaModificacion)
+                                @Html.HiddenFor(model => model.Estado)
+                                @Html.HiddenFor(model => model.Eliminado)
+
+                                <div class="row mb-3">
+                                    <label for="Country" class="col-md-4 col-lg-3 col-form-label">Pais</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        @Html.DropDownList("PaisId", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                                        @Html.ValidationMessageFor(model => model.PaisId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Country" class="col-md-4 col-lg-3 col-form-label">Ciudad</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <select id="CiudadId" name="CiudadId" class="form-control"></select>
+                                        @Html.ValidationMessageFor(model => model.CiudadId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Address" class="col-md-4 col-lg-3 col-form-label">Direccion</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                        @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Address" class="col-md-4 col-lg-3 col-form-label">Telefono</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                        @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <input type="submit" value="Guardar" class="btn btn-primary" onclick="return confirm('Seguro que desea actualizar los datos del perfil?')" />
+                                </div>
+                            }<!-- End Profile Edit Form -->
+
+                        </div>
+
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+        $(function () {
+            $("#PaisId").change(function () {
+                var id = $(this).val();
+                if (id !== '')
+                    getCiudad(id, false);
+            });
+        });
+
+        $(document).ready(function () {
+
+            var id = $('#PaisId').val();
+            if (id !== '')
+                getCiudad(id, true);
+        });
+
+        function getCiudad(id, isLoad) {
+            $("#CiudadId").empty();
+            $.get("/Usuario/Ciudad_Bind", { paisId: id }, function (data) {
+                var lines = "<option>--- Seleccionar Ciudad ---</option>";
+                $.each(data, function (i, valor) {
+                    lines += "<option value=" + valor.Value + ">" + valor.Text + "</option>";
+                });
+                $("#CiudadId").html(lines);
+                 if (isLoad === true)
+                    $("#CiudadId").val(@Model.CiudadId);
+            });
+        }
+</script>

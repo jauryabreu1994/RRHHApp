@@ -1,0 +1,78 @@
+﻿@model RRHHApp.Models.Licencias.LicenciaConfiguracion
+
+@{
+    ViewBag.Title = "Eliminar: " + @Model.Descripcion;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="pagetitle">
+    <h1>@ViewBag.Title </h1>
+</div>
+<style>
+    .label {
+        font-weight: bold;
+    }
+</style>
+<!-- End Page Title -->
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"> ¿Estás seguro/a que quieres eliminar esta Configuracion de Licencia? </h5>
+
+                    <div>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Descripcion </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model._Licencia.Descripcion) </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Tiempo del Usuario </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.UsuarioTiempo) </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Cantidad de Días </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.Cantidad) </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Requiere Supervisor Directo </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.RequiereSupervisorAprobacion) </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Requiere Supervisor Superior </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.RequiereGerenteAprobacion) </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Requiere RRHH </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.RequiereRRHHAprobacion) </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Fecha Creacion </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.FechaCreacion) </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4 label "> Estado </div>
+                            <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.Estado) </div>
+                        </div>
+                        <br />
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col text-center">
+
+                                        <input type="button" value="Volver Atras" class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "LicenciaConfiguracion") '" />
+                                        <input type="submit" value="Eliminar" class="btn btn-danger" />
+                                    </div>
+                                </div>
+                            </div><br /><br />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

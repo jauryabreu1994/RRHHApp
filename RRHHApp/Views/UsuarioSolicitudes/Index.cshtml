@@ -1,0 +1,93 @@
+﻿@model IEnumerable<RRHHApp.Models.Solicitudes.UsuarioSolicitudes>
+
+@{
+    ViewBag.Title = "Listado de solicitudes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="pagetitle">
+    <h1>@ViewBag.Title</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "UsuarioSolicitudes")">Solicitudes</a></li>
+            <li class="breadcrumb-item">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <br />
+                    <button type="button" class="btn btn-success btn-sm" title="Agregar Nueva Solicitud de Usuario"
+                            style="float: right; margin-top: -15px; margin-right: 5px; padding: 5px 15px 5px 10px;"
+                            onclick="location.href='@Url.Action("Create", "UsuarioSolicitudes")'">
+                        <span class="fa fa-plus">&nbsp;</span> Agregar Nueva Solicitud
+                    </button>
+                    <br />
+                    <table class="table datatable table-responsive table-hover table-striped display" width="100%" cellspacing="1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Licencia
+                                </th>
+
+                                <th>
+                                    Fecha Desde
+                                </th>
+                                <th>
+                                    Fecha Hasta
+                                </th>
+                                <th>
+                                    Comentario
+                                </th>
+                                <th>
+                                    Fecha Solicitud
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0)
+                            {
+                                foreach (var term in Model)
+                                {
+                                   
+                                    <tr style="background-color: @((term.SolicitudEstado == RRHHApp.Models.Enums.SolicitudEstadoEnum.Aprobado) ? "#C5ECDA" : 
+                                            ((term.SolicitudEstado == RRHHApp.Models.Enums.SolicitudEstadoEnum.Rechazado) ? "#F3B0B0" :""))">
+                                        <td>@Html.DisplayFor(modelItem => term._Licencia.Descripcion)</td>
+                                        <td>@term.FechaDesde.ToString("dd/MM/yyyy")</td>
+                                        <td>@term.FechaHasta.ToString("dd/MM/yyyy")</td>
+                                        <td>@Html.DisplayFor(modelItem => term.Comentario)</td>
+                                        <td>@term.FechaCreacion.ToString("dd/MM/yyyy hh:mm tt")</td>
+                                        <td>@Html.DisplayFor(modelItem => term.SolicitudEstado)</td>
+                                        <td align="right">
+
+                                            @if (term.SolicitudEstado == RRHHApp.Models.Enums.SolicitudEstadoEnum.Pendiente)
+                                            {
+                                                <button type="button" class="btn btn-danger btn-sm" title="Eliminar" onclick="location.href='@Url.Action("Delete", "UsuarioSolicitudes", new { id = term.Id }) '">
+                                                    <span class="bi bi-eraser">&nbsp;</span>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

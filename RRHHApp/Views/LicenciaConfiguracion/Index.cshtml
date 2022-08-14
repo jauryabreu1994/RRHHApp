@@ -1,0 +1,92 @@
+﻿@model IEnumerable<RRHHApp.Models.Licencias.LicenciaConfiguracion>
+@{
+    ViewBag.Title = "Listado de Configuraciones de Licencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>@ViewBag.Title</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "LicenciaConfiguracion")">Configuracion de Licencia</a></li>
+            <li class="breadcrumb-item">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <br />
+                    <button type="button" class="btn btn-success btn-sm" title="Agregar Nueva Configuracion de Licencia"
+                            style="float: right; margin-top: -15px; margin-right: 5px; padding: 5px 15px 5px 10px;"
+                            onclick="location.href='@Url.Action("Create", "LicenciaConfiguracion")'">
+                        <span class="fa fa-plus">&nbsp;</span> Agregar Nueva Configuracion de Licencia
+                    </button>
+                    <br />
+                    <table class="table datatable table-responsive table-hover table-striped display" width="100%" cellspacing="1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Licencia
+                                </th>
+                                <th>
+                                    Tiempo del Recurso (Dias)
+                                </th>
+                                <th>
+                                    Duracion (Dias)
+                                </th>
+                                <th>
+                                    Supervior Directo
+                                </th>
+                                <th>
+                                    Supervisor Superior
+                                </th>
+                                <th>
+                                    RRHHH
+                                </th>
+                                <th>
+                                    Fecha Creacion
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0)
+                            {
+                                foreach (var term in Model)
+                                {
+                                    <tr style="@(term.Eliminado == true ? "background-color:#FAE6E9" : "")">
+                                        <td>@Html.DisplayFor(modelItem => term._Licencia.Descripcion)</td>
+                                        <td>@Html.DisplayFor(modelItem => term.UsuarioTiempo)</td>
+                                        <td>@Html.DisplayFor(modelItem => term.Cantidad)</td>
+                                        <td>@((term.RequiereSupervisorAprobacion) ? "Si" : "No")</td>
+                                        <td>@((term.RequiereGerenteAprobacion) ? "Si" : "No")</td>
+                                        <td>@((term.RequiereRRHHAprobacion) ? "Si" : "No")</td>
+                                        <td>@term.FechaCreacion.ToString("dd/MM/yyyy hh:mm tt")</td>
+                                        <td align="right">
+                                            @if (!term.Eliminado)
+                                            {
+                                                <button type="button" class="btn btn-info btn-sm" title="Modificar" onclick="location.href='@Url.Action("Edit", "LicenciaConfiguracion", new { id = term.Id }) '">
+                                                    <span class="bi bi-pencil">&nbsp;</span>
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-sm" title="Eliminar" onclick="location.href='@Url.Action("Delete", "LicenciaConfiguracion", new { id = term.Id }) '">
+                                                    <span class="bi bi-eraser">&nbsp;</span>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

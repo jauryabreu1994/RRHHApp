@@ -1,0 +1,82 @@
+﻿@model RRHHApp.Models.Usuarios.Usuario
+
+@{
+    ViewBag.Title = "Eliminar a: " + string.Format("{0} {1}", Model.Nombre, Model.Apellido);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <div class="pagetitle">
+        <h1>@ViewBag.Title </h1>
+    </div>
+    <style>
+        .label {
+            font-weight: bold;
+        }
+    </style>
+    <!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"> ¿Estás seguro/a que quieres eliminar este Usuario? </h5>
+
+                        <div>
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Usuario </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.UsuarioId) </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Nombre </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.Nombre) </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Identificacion </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.Identificacion) </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Grupo Usuario </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model._GrupoUsuario.Descripcion) </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Posicion </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model._Posicion.Descripcion) </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Pais </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model._Pais.Descripcion) </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Ciudad </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model._Ciudad.Descripcion) </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-4 label "> Direccion </div>
+                                <div class="col-lg-10 col-md-8">@Html.DisplayFor(model => model.Direccion) </div>
+                            </div>
+                            <br />
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col text-center">
+
+                                            <input type="button" value="Volver Atras" class="btn btn-secondary" onclick="location.href='@Url.Action("Index", "Usuario") '" />
+                                            <input type="submit" value="Eliminar" class="btn btn-danger" />
+                                        </div>
+                                    </div>
+                                </div><br /><br />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+

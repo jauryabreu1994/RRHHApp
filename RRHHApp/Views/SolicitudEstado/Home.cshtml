@@ -1,0 +1,103 @@
+﻿@model IEnumerable<RRHHApp.Models.Solicitudes.InformacionSolicitud>
+
+@{
+    ViewBag.Title = "Estado de Solicitudes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>@ViewBag.Title</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Solicitudes</a></li>
+            <li class="breadcrumb-item">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <br />
+                    <table class="table datatable table-responsive table-hover table-striped display" width="100%" cellspacing="1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Recurso
+                                </th>
+                                <th>
+                                    Licencia
+                                </th>
+                                <th>
+                                    Inicio Licencia
+                                </th>
+                                <th>
+                                    Fin Licencia
+                                </th>
+                                <th>
+                                    Total de Dias
+                                </th>
+                                <th>
+                                    Comentario
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+                                <th>
+                                    Fecha de Solicitud
+                                </th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0)
+                            {
+                                foreach (var term in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => term.UsuarioNombre)</td>
+                                        <td>@Html.DisplayFor(modelItem => term.Licencia)</td>
+                                        <td>@term.FechaDesde.ToString("dd/MM/yyyy hh:mm tt")</td>
+                                        <td>@term.FechaHasta.ToString("dd/MM/yyyy hh:mm tt")</td>
+                                        <td>@Html.DisplayFor(modelItem => term.CantidadDias)</td>
+                                        <td>@Html.DisplayFor(modelItem => term.Comentario)</td>
+                                        <td>@Html.DisplayFor(modelItem => term.Estado)</td>
+                                        <td>@Html.DisplayFor(modelItem => term.FechaCreacion)</td>
+
+                                        <td align="right">
+
+                                            @if (term.Estado == RRHHApp.Models.Enums.SolicitudEstadoEnum.Pendiente)
+                                            {
+
+                                                <button type="button" class="btn btn-success btn-sm" title="Aprobar" 
+                                                        onclick="if (confirm('Seguro que desea aprobar la Solicitud?'))
+                                                                 window.location.href = '@Url.Action("Authorize", "SolicitudEstado", new { id = term.Id })'">
+                                                    <span class="bi bi-check-circle"> Aprobar</span>
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-sm" title="Rechazar" 
+                                                        onclick="if (confirm('Seguro que desea rechazar la Solicitud?'))
+                                                                 window.location.href = '@Url.Action("Reject", "SolicitudEstado", new { id = term.Id })'">
+                                                    <span class="bi bi-x-circle"> Rechazar</span>
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
