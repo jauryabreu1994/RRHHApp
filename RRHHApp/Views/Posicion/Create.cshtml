@@ -29,7 +29,7 @@
 
 
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label"> Pais </label>
+                            <label class="col-sm-2 col-form-label"> Departamento </label>
                             <div class="col-sm-10">
                                 @Html.DropDownList("DepartamentoId", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" })
                                 @Html.ValidationMessageFor(model => model.DepartamentoId, "", new { @class = "text-danger" })
