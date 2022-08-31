@@ -80,10 +80,10 @@ namespace RRHHApp.Controllers.Solicitudes
             ViewBag.FechaDesde = DateTime.Now.Date.ToString("yyyy-MM-dd");
             ViewBag.FechaHasta = DateTime.Now.Date.ToString("yyyy-MM-dd");
 
-            ViewBag.LicenciaId = new SelectList(db.Licencia, "Id", "Descripcion");
+            
 
             var licencias = await db.Licencia.Where(a=> !a.Eliminado && (a.Genero == usuario.Genero || a.Genero == Models.Enums.GeneroEnum.Otro)).ToListAsync();
-
+            ViewBag.LicenciaId = new SelectList(licencias, "Id", "Descripcion");
             foreach (var lic in licencias)
             {
                 var DateAvailable = await generic.getDateAvailable(id, lic.Id, DateTime.Now.Date, DateTime.Now.Date.AddDays(-1), usuario.FechaIngreso);

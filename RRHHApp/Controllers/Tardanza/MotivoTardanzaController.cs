@@ -24,7 +24,7 @@ namespace MedicalApp.Controllers.Tardanza
                 this.AddNotification("No posees permisos para listar las Tardanzas.", NotificationType.WARNING);
                 return RedirectToAction("Index", "DashBoard");
             }
-            return View(await db.MotivoTardanza.Where(a=>!a.Eliminado).ToListAsync());
+            return View(await db.MotivoTardanza.ToListAsync());
         }
 
 

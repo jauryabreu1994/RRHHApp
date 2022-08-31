@@ -36,16 +36,41 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label"> Genero </label>
                             <div class="col-sm-10">
-                                @Html.EnumDropDownListFor(model => model.Genero, htmlAttributes: new { @class = "form-control", autocomplete = "off" })
-                                @Html.ValidationMessageFor(model => model.Genero, "", new { @class = "text-danger" })
+                                <select id="Genero" name="Genero" class="form-control">
+                                    <option value="0">Masculino</option>
+                                    <option value="1">Femenimo</option>
+                                    <option value="2">Todos</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label">Icono</label>
                             <div class="col-sm-10">
-                                @Html.EditorFor(model => model.Icono, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.Icono, "", new { @class = "text-danger" })
+                                <select id="Icono" name="Icono" class="form-control">
+                                    <option value="airplane">Avion</option>
+                                    <option value="archive">Archivo</option>
+                                    <option value="bank">Banco</option>
+                                    <option value="battery-full">Bateria</option>
+                                    <option value="bicycle">Bicicleta</option>
+                                    <option value="bag">Bolsa</option>
+                                    <option value="cup-hot">Cafe</option>
+                                    <option value="calendar-date">Calendario</option>
+                                    <option value="cart">Carrito</option>
+                                    <option value="pc-display">Computadora</option>
+                                    <option value="balloon">Globo</option>
+                                    <option value="gender-male">Hombre</option>
+                                    <option value="controller">Juego de Video</option>
+                                    <option value="book">Libro</option>
+                                    <option value="key">Llave</option>
+                                    <option value="capsule">Medicamento</option>
+                                    <option value="mic">Microfono</option>
+                                    <option value="gender-female">Mujer</option>
+                                    <option value="gift">Regalo</option>
+                                    <option value="clock">Reloj</option>
+                                    <option value="cloud-lightning-rain">Tormenta</option>
+                                    <option value="sun">Sol</option>
+                                </select>
                             </div>
                         </div>
 
@@ -71,3 +96,10 @@
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        document.getElementById("Genero").value = "@ViewBag.Genero";
+        document.getElementById("Icono").value = "@ViewBag.Icono";
+    });
+</script>

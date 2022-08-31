@@ -33,6 +33,7 @@ namespace RRHHApp.Controllers.Licencias
         // GET: Licencia/Create
         public ActionResult Create()
         {
+            ViewBag.Icono = string.Empty;
             return View();
         }
 
@@ -49,6 +50,8 @@ namespace RRHHApp.Controllers.Licencias
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewBag.Icono = licencia.Icono;
+            ViewBag.Genero = Convert.ToInt32(licencia.Genero).ToString();
 
             return View(licencia);
         }
@@ -65,6 +68,9 @@ namespace RRHHApp.Controllers.Licencias
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Icono = licencia.Icono;
+            ViewBag.Genero = Convert.ToInt32(licencia.Genero).ToString();
             return View(licencia);
         }
 
@@ -81,6 +87,9 @@ namespace RRHHApp.Controllers.Licencias
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Icono = licencia.Icono;
+            ViewBag.Genero = Convert.ToInt32(licencia.Genero).ToString();
             return View(licencia);
         }
 
@@ -104,6 +113,12 @@ namespace RRHHApp.Controllers.Licencias
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
+
+            if (db.LicenciaConfiguracion.Where(a => a.LicenciaId == id && !a.Eliminado).Count() > 0)
+            {
+                this.AddNotification("Esta licencia posee configuraciones activas, primero es necesario eliminar las configuraciones de esta licencia", NotificationType.WARNING);
+                return RedirectToAction("Index");
+            }
             Licencia licencia = await db.Licencia.FindAsync(id);
             licencia.FechaModificacion = DateTime.Now;
             licencia.Eliminado = true;

@@ -116,8 +116,12 @@ namespace RRHHApp.Controllers.Licencias
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             LicenciaConfiguracion licenciaConfiguracion = await db.LicenciaConfiguracion.FindAsync(id);
-            db.LicenciaConfiguracion.Remove(licenciaConfiguracion);
-            await db.SaveChangesAsync();
+            licenciaConfiguracion.FechaModificacion = DateTime.Now;
+            licenciaConfiguracion.Eliminado = true;
+            licenciaConfiguracion.Estado = Models.Enums.EstadoEnum.Inactivo;
+            db.Entry(licenciaConfiguracion).State = EntityState.Modified;
+            db.SaveChanges();
+            this.AddNotification("Configuracion de Licencia eliminada exitosamente", NotificationType.SUCCESS);
             return RedirectToAction("Index");
         }
 

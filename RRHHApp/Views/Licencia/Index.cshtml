@@ -38,9 +38,6 @@
                                     Descripcion
                                 </th>
                                 <th>
-                                    Icono
-                                </th>
-                                <th>
                                     Colocar en Inicio
                                 </th>
                                 <th>
@@ -62,7 +59,6 @@
                                 {
                                     <tr style="@(term.Eliminado == true ? "background-color:#FAE6E9" : "")">
                                         <td>@Html.DisplayFor(modelItem => term.Descripcion)</td>
-                                        <td>@term.Icono</td>
                                         <td>@(term.Es_Principal ? "Si" : "No")</td>
                                         <td>@(term.Genero == RRHHApp.Models.Enums.GeneroEnum.Femenino ? "Femenino" : (term.Genero == RRHHApp.Models.Enums.GeneroEnum.Masculino ? "Masculino" : "Todos")   )</td>
                                         <td>@term.FechaCreacion.ToString("dd/MM/yyyy hh:mm tt")</td>
