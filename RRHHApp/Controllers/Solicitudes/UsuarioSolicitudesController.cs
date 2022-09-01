@@ -110,9 +110,13 @@ namespace RRHHApp.Controllers.Solicitudes
                                                                 !a.Eliminado && a.UsuarioId == id).ToList();
 
                 listado = await getSolicitudEstadoEnum(listado);
-                if (listado.Where(a=>a.SolicitudEstado != Models.Enums.SolicitudEstadoEnum.Rechazado).Count() > 0)
+                if (listado.Where(a => a.SolicitudEstado != Models.Enums.SolicitudEstadoEnum.Rechazado).Count() > 0)
                 {
-                    this.AddNotification("El rango de fecha seleccionada no esta disponible, posee una solicitud.", NotificationType.WARNING);
+                    this.AddNotification("El rango de fecha seleccionada no esta disponible, ya posee una solicitud.", NotificationType.WARNING);
+                }
+                else if (usuarioSolicitudes.FechaDesde > usuarioSolicitudes.FechaHasta)
+                {
+                    this.AddNotification("El rango de fecha seleccionada no es valido.", NotificationType.WARNING);
                 }
                 else
                 {
