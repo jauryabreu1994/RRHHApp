@@ -83,7 +83,7 @@ namespace RRHHApp.Controllers.Solicitudes
             
 
             var licencias = await db.Licencia.Where(a=> !a.Eliminado && (a.Genero == usuario.Genero || a.Genero == Models.Enums.GeneroEnum.Otro)).ToListAsync();
-            ViewBag.LicenciaId = new SelectList(licencias, "Id", "Descripcion");
+            ViewBag.LicenciaId = new SelectList(licencias.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
             foreach (var lic in licencias)
             {
                 var DateAvailable = await generic.getDateAvailable(id, lic.Id, DateTime.Now.Date, DateTime.Now.Date.AddDays(-1), usuario.FechaIngreso);
@@ -185,7 +185,7 @@ namespace RRHHApp.Controllers.Solicitudes
             ViewBag.MaxDate = DateTime.Now.Date.AddYears(1).ToString("yyyy-MM-dd");
             ViewBag.FechaDesde = usuarioSolicitudes.FechaDesde.ToString("yyyy-MM-dd");
             ViewBag.FechaHasta = usuarioSolicitudes.FechaHasta.ToString("yyyy-MM-dd");
-            ViewBag.LicenciaId = new SelectList(db.Licencia, "Id", "Descripcion", usuarioSolicitudes.LicenciaId);
+            ViewBag.LicenciaId = new SelectList(db.Licencia.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuarioSolicitudes.LicenciaId);
 
             var licenciaslistado = await db.Licencia.Where(a => !a.Eliminado).ToListAsync();
 

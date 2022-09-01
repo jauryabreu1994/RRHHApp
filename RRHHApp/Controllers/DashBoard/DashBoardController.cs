@@ -27,12 +27,13 @@ namespace RRHHApp.Controllers.DashBoard
 
             
             DateTime date = DateTime.Now.AddMonths(-2);
-            ViewBag.Usuarios = db.Usuario.Where(a=>a.FechaIngreso >= date).OrderByDescending(a => a.FechaIngreso).Take(10).ToList();
+            ViewBag.Usuarios = db.Usuario.Where(a=>a.FechaIngreso >= date && !a.Eliminado).OrderByDescending(a => a.FechaIngreso).Take(10).ToList();
 
             DateTime desde = DateTime.Now.Date;
             DateTime hasta = DateTime.Now.Date.AddDays(20);
 
             var solicitudes = db.UsuarioSolicitudes.Where(a => a.FechaDesde >= desde && a.FechaDesde <= hasta).Include(a=>a._Usuario).Include(a => a._Licencia).ToList();
+            solicitudes = solicitudes.Where(a => !a._Usuario.Eliminado).ToList();
 
             List<UsuarioSolicitudes> listado = new List<UsuarioSolicitudes>();
             foreach (var linea in solicitudes)

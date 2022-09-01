@@ -26,7 +26,7 @@ namespace RRHHApp.Controllers.Licencias
                 return RedirectToAction("Index", "DashBoard");
             }
 
-            return View(await db.Licencia.ToListAsync());
+            return View(await db.Licencia.Where(a=>!a.Eliminado).ToListAsync());
         }
 
 
@@ -44,12 +44,15 @@ namespace RRHHApp.Controllers.Licencias
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Descripcion,FechaCreacion,Genero,FechaModificacion,Icono,Es_Principal,Estado,Eliminado")] Licencia licencia)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(licencia.Descripcion))
             {
                 db.Licencia.Add(licencia);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
+
             }
+            else
+                this.AddNotification("Descripción no puede estar vacio.", NotificationType.ERROR);
             ViewBag.Icono = licencia.Icono;
             ViewBag.Genero = Convert.ToInt32(licencia.Genero).ToString();
 
@@ -81,12 +84,14 @@ namespace RRHHApp.Controllers.Licencias
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Descripcion,Es_Principal,Icono,Genero,FechaCreacion,FechaModificacion,Estado,Eliminado")] Licencia licencia)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(licencia.Descripcion))
             {
                 db.Entry(licencia).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            else
+                this.AddNotification("Descripción no puede estar vacio.", NotificationType.ERROR);
 
             ViewBag.Icono = licencia.Icono;
             ViewBag.Genero = Convert.ToInt32(licencia.Genero).ToString();

@@ -24,7 +24,7 @@ namespace RRHHApp.Controllers.Usuarios
                 {
                     return HttpNotFound();
                 }
-                ViewBag.UsuarioId = new SelectList(db.Usuario, "Id", "UsuarioId", usuarioContrasena.UsuarioId);
+                ViewBag.UsuarioId = new SelectList(db.Usuario.Where(a => !a.Eliminado).ToList(), "Id", "UsuarioId", usuarioContrasena.UsuarioId);
                 return View(usuarioContrasena);
             }
             catch

@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using RRHHApp.Context;
 using RRHHApp.Models.Usuarios;
 using RRHHApp.Extensions;
+using System.Linq;
 
 namespace RRHHApp.Controllers.Usuarios
 {
@@ -32,7 +33,7 @@ namespace RRHHApp.Controllers.Usuarios
                 return RedirectToAction("Index", "Posicion");
             }
 
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion");
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
             return View();
         }
 
@@ -51,7 +52,7 @@ namespace RRHHApp.Controllers.Usuarios
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion", posicion.DepartamentoId);
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", posicion.DepartamentoId);
             this.AddNotification("Favor completar todos los campos", NotificationType.ERROR);
             return View(posicion);
         }
@@ -73,7 +74,7 @@ namespace RRHHApp.Controllers.Usuarios
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion", posicion.DepartamentoId);
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", posicion.DepartamentoId);
             return View(posicion);
         }
 
@@ -91,7 +92,7 @@ namespace RRHHApp.Controllers.Usuarios
                 this.AddNotification("Posicion modificada exitosamente.", NotificationType.SUCCESS);
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion", posicion.DepartamentoId);
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", posicion.DepartamentoId);
             this.AddNotification("Favor completar todos los campos", NotificationType.ERROR);
             return View(posicion);
         }
@@ -109,7 +110,7 @@ namespace RRHHApp.Controllers.Usuarios
                 return RedirectToAction("Error", "Home");;
             }
             Posicion posicion = await db.Posicion.FindAsync(id);
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion", posicion.DepartamentoId);
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", posicion.DepartamentoId);
             if (posicion == null)
             {
                 return HttpNotFound();

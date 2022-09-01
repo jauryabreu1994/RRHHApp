@@ -54,13 +54,13 @@ namespace RRHHApp.Controllers.Usuarios
             }
             #region Listado de Usuarios
             var list = getList();
-            var currentUser = list.Where(a => a.Id == id).First();
+            var currentUser = list.Where(a => a.Id == id && !a.Eliminado).First();
 
             List<Usuario> usersByDepartment = new List<Usuario>();
             if(currentUser.IsCEO)
-                usersByDepartment = list.Where(a => a.Id != id).ToList();
+                usersByDepartment = list.Where(a => a.Id != id && !a.Eliminado).ToList();
             else
-                usersByDepartment = list.Where(a => a.Id != id && a.DepartamentoId == currentUser.DepartamentoId).ToList();
+                usersByDepartment = list.Where(a => a.Id != id && a.DepartamentoId == currentUser.DepartamentoId && !a.Eliminado).ToList();
 
             var usersByDepartmentResult = usersByDepartment.Where(p => !db.UsuarioAsociado.Any(p2 => p2.UsuarioId == p.Id && !p2.Eliminado) && !p.IsCEO);
 
@@ -201,7 +201,7 @@ namespace RRHHApp.Controllers.Usuarios
         private List<Usuario> getList()
         {
 
-            List<Usuario> list = db.Usuario.ToList();
+            List<Usuario> list = db.Usuario.Where(a=> !a.Eliminado).ToList();
 
             foreach (var item in list)
                 item.UsuarioId = string.Format("{0} {1}", item.Nombre, item.Apellido);

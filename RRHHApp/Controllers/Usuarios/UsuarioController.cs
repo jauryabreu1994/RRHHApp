@@ -24,7 +24,7 @@ namespace RRHHApp.Controllers.Usuarios
                 this.AddNotification("No posees permisos para el Listado de Usuarios.", NotificationType.WARNING);
                 return RedirectToAction("Index", "DashBoard");
             }
-            var usuario = db.Usuario.Include(u => u._Posicion).Include(u => u._Ciudad).Include(u => u._GrupoUsuario).Include(u => u._Pais);
+            var usuario = db.Usuario.Where(a=>!a.Eliminado).Include(u => u._Posicion).Include(u => u._Ciudad).Include(u => u._GrupoUsuario).Include(u => u._Pais);
             ViewBag.ListGroup = db.GrupoUsuario.ToList();
             return View(usuario.ToList());
         }
@@ -97,7 +97,7 @@ namespace RRHHApp.Controllers.Usuarios
             if (string.IsNullOrEmpty(DepartamentoId.ToString()))
                 return Json(null);
 
-            List<Posicion> posiciones = db.Posicion.Where(c => c.DepartamentoId == DepartamentoId).ToList();
+            List<Posicion> posiciones = db.Posicion.Where(c => c.DepartamentoId == DepartamentoId && !c.Eliminado).ToList();
             List<SelectListItem> listado = new List<SelectListItem>();
 
             foreach (var p in posiciones)
@@ -115,10 +115,10 @@ namespace RRHHApp.Controllers.Usuarios
                 return RedirectToAction("Index", "Usuario");
             }
 
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion");
-            ViewBag.CiudadId = new SelectList(db.Ciudad, "Id", "Descripcion");
-            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario, "Id", "Descripcion");
-            ViewBag.PaisId = new SelectList(db.Pais, "Id", "Descripcion");
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
+            ViewBag.CiudadId = new SelectList(db.Ciudad.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
+            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
+            ViewBag.PaisId = new SelectList(db.Pais.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
             ViewBag.MinDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
             return View();
         }
@@ -158,10 +158,10 @@ namespace RRHHApp.Controllers.Usuarios
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion");
-            ViewBag.CiudadId = new SelectList(db.Ciudad, "Id", "Descripcion", usuario.CiudadId);
-            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario, "Id", "Descripcion", usuario.GrupoUsuarioId);
-            ViewBag.PaisId = new SelectList(db.Pais, "Id", "Descripcion", usuario.PaisId);
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
+            ViewBag.CiudadId = new SelectList(db.Ciudad.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.CiudadId);
+            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.GrupoUsuarioId);
+            ViewBag.PaisId = new SelectList(db.Pais.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.PaisId);
             this.AddNotification("Favor completar todos los campos", NotificationType.ERROR);
             return View(usuario);
         }
@@ -183,10 +183,10 @@ namespace RRHHApp.Controllers.Usuarios
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion", usuario.DepartamentoId);
-            ViewBag.CiudadId = new SelectList(db.Ciudad, "Id", "Descripcion", usuario.CiudadId);
-            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario, "Id", "Descripcion", usuario.GrupoUsuarioId);
-            ViewBag.PaisId = new SelectList(db.Pais, "Id", "Descripcion", usuario.PaisId);
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.DepartamentoId);
+            ViewBag.CiudadId = new SelectList(db.Ciudad.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.CiudadId);
+            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.GrupoUsuarioId);
+            ViewBag.PaisId = new SelectList(db.Pais.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.PaisId);
             ViewBag.MinDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
             return View(usuario);
         }
@@ -206,10 +206,10 @@ namespace RRHHApp.Controllers.Usuarios
                 this.AddNotification("Usuario modificado exitosamente", NotificationType.SUCCESS);
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartamentoId = new SelectList(db.Departamento, "Id", "Descripcion");
-            ViewBag.CiudadId = new SelectList(db.Ciudad, "Id", "Descripcion", usuario.CiudadId);
-            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario, "Id", "Descripcion", usuario.GrupoUsuarioId);
-            ViewBag.PaisId = new SelectList(db.Pais, "Id", "Descripcion", usuario.PaisId);
+            ViewBag.DepartamentoId = new SelectList(db.Departamento.Where(a=>!a.Eliminado).ToList(), "Id", "Descripcion");
+            ViewBag.CiudadId = new SelectList(db.Ciudad.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.CiudadId);
+            ViewBag.GrupoUsuarioId = new SelectList(db.GrupoUsuario.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.GrupoUsuarioId);
+            ViewBag.PaisId = new SelectList(db.Pais.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.PaisId);
             this.AddNotification("Favor completar todos los campos", NotificationType.ERROR);
             return View(usuario);
         }
@@ -230,7 +230,7 @@ namespace RRHHApp.Controllers.Usuarios
                 return HttpNotFound();
             }
 
-            ViewBag.PaisId = new SelectList(db.Pais, "Id", "Descripcion", usuario.PaisId);
+            ViewBag.PaisId = new SelectList(db.Pais.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.PaisId);
 
             return View(usuario);
         }
@@ -257,7 +257,7 @@ namespace RRHHApp.Controllers.Usuarios
             }
             catch
             {
-                ViewBag.PaisId = new SelectList(db.Pais, "Id", "Descripcion", usuario.PaisId);
+                ViewBag.PaisId = new SelectList(db.Pais.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuario.PaisId);
                 this.AddNotification("Favor completar todos los campos", NotificationType.ERROR);
                 return View(usuario);
             }

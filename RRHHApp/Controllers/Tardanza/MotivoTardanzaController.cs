@@ -24,7 +24,7 @@ namespace MedicalApp.Controllers.Tardanza
                 this.AddNotification("No posees permisos para listar las Tardanzas.", NotificationType.WARNING);
                 return RedirectToAction("Index", "DashBoard");
             }
-            return View(await db.MotivoTardanza.ToListAsync());
+            return View(await db.MotivoTardanza.Where(a => !a.Eliminado).ToListAsync());
         }
 
 
@@ -46,13 +46,14 @@ namespace MedicalApp.Controllers.Tardanza
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Descripcion,FechaCreacion,FechaModificacion,Estado,Eliminado")] MotivoTardanza motivoTardanza)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(motivoTardanza.Descripcion))
             {
                 db.MotivoTardanza.Add(motivoTardanza);
                 await db.SaveChangesAsync();
                 this.AddNotification("Motivo de Tardanza registrada exitosamente.", NotificationType.SUCCESS);
                 return RedirectToAction("Index");
-            }
+            }else
+                this.AddNotification("Descripción no puede estar vacio.", NotificationType.ERROR);
 
             return View(motivoTardanza);
         }
@@ -84,13 +85,16 @@ namespace MedicalApp.Controllers.Tardanza
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Descripcion,FechaCreacion,FechaModificacion,Estado,Eliminado")] MotivoTardanza motivoTardanza)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(motivoTardanza.Descripcion))
             {
                 db.Entry(motivoTardanza).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 this.AddNotification("Motivo de Tardanza modificada exitosamente.", NotificationType.SUCCESS);
                 return RedirectToAction("Index");
             }
+            else
+                this.AddNotification("Descripción no puede estar vacio.", NotificationType.ERROR);
+
             return View(motivoTardanza);
         }
 

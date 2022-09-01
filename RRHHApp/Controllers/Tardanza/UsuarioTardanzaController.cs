@@ -104,8 +104,8 @@ namespace MedicalApp.Controllers.Tardanza
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UsuarioId = new SelectList(usuariosList, "Id", "Nombre", usuarioId);
-            ViewBag.MotivoTardanzaId = new SelectList(db.MotivoTardanza, "Id", "Descripcion");
+            ViewBag.UsuarioId = new SelectList(usuariosList.Where(a => !a.Eliminado).ToList(), "Id", "Nombre", usuarioId);
+            ViewBag.MotivoTardanzaId = new SelectList(db.MotivoTardanza.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
 
             ViewBag.MaxDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
             return View();
@@ -131,8 +131,8 @@ namespace MedicalApp.Controllers.Tardanza
                 return RedirectToAction("Index");
             }
 
-            ViewBag.MotivoTardanzaId = new SelectList(db.MotivoTardanza, "Id", "Descripcion", usuarioTardanza.MotivoTardanzaId);
-            ViewBag.UsuarioId = new SelectList(db.Usuario, "Id", "UsuarioId", usuarioTardanza.UsuarioId);
+            ViewBag.MotivoTardanzaId = new SelectList(db.MotivoTardanza.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", usuarioTardanza.MotivoTardanzaId);
+            ViewBag.UsuarioId = new SelectList(db.Usuario.Where(a => !a.Eliminado).ToList(), "Id", "UsuarioId", usuarioTardanza.UsuarioId);
             return View(usuarioTardanza);
         }
 

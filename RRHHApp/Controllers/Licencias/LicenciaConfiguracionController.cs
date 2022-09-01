@@ -40,7 +40,7 @@ namespace RRHHApp.Controllers.Licencias
                 return RedirectToAction("Index", "DashBoard");
             }
 
-            ViewBag.LicenciaId = new SelectList(db.Licencia, "Id", "Descripcion");
+            ViewBag.LicenciaId = new SelectList(db.Licencia.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace RRHHApp.Controllers.Licencias
                 return RedirectToAction("Index");
             }
 
-            ViewBag.LicenciaId = new SelectList(db.Licencia, "Id", "Descripcion", licenciaConfiguracion.LicenciaId);
+            ViewBag.LicenciaId = new SelectList(db.Licencia.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", licenciaConfiguracion.LicenciaId);
             return View(licenciaConfiguracion);
         }
 
@@ -74,7 +74,7 @@ namespace RRHHApp.Controllers.Licencias
             {
                 return HttpNotFound();
             }
-            ViewBag.LicenciaId = new SelectList(db.Licencia, "Id", "Descripcion", licenciaConfiguracion.LicenciaId);
+            ViewBag.LicenciaId = new SelectList(db.Licencia.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", licenciaConfiguracion.LicenciaId);
             return View(licenciaConfiguracion);
         }
 
@@ -91,7 +91,7 @@ namespace RRHHApp.Controllers.Licencias
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.LicenciaId = new SelectList(db.Licencia, "Id", "Descripcion", licenciaConfiguracion.LicenciaId);
+            ViewBag.LicenciaId = new SelectList(db.Licencia.Where(a => !a.Eliminado).ToList(), "Id", "Descripcion", licenciaConfiguracion.LicenciaId);
             return View(licenciaConfiguracion);
         }
 
